@@ -71,10 +71,6 @@ class JiraBot(object):
     def __init__(self):
         self.client = Client(self.url)
 
-
-
-
-
     def login(self):
         if self.busted == True:
             return None
