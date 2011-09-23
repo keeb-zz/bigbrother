@@ -53,7 +53,7 @@ class JiraBot(object):
 
     url = 'https://clairmail.jira.com/rpc/soap/jirasoapservice-v2?wsdl'
     _username = 'nick'
-    _password = 'foo'
+    _password = 'food'
     token = None
     busted = False
 
