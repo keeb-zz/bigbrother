@@ -1,0 +1,4 @@
+Bigbrother connects to the JIRA Soap Service to execute JQL queries via suds.
+
+Right now it displays what each assignee has assigned to them
+
