@@ -9,6 +9,17 @@ from suds.client import Client
 log = logging.getLogger(__name__)
 logging.getLogger('suds.client').setLevel(logging.DEBUG)
 
+class Configuration:
+    def __init__(self):
+        self.username = "fake"
+        self.password = "fake"
+
+def make_configuration(username, password):
+    c = Configuration()
+    c.username = username
+    c.password = password
+    return c
+
 def requireslogin(func):
     '''Authentication/Error decorator for JiraBot class methods.'''
     @wraps(func)
@@ -43,6 +54,7 @@ def requireslogin(func):
                     return None
     return wrapper
 
+
 class JiraBot(object):
     '''Class to interop with JiraStudio through suds.
 
@@ -52,24 +64,29 @@ class JiraBot(object):
     '''
 
     url = 'https://clairmail.jira.com/rpc/soap/jirasoapservice-v2?wsdl'
-    _username = 'nick'
-    _password = 'food'
+    _options = Configuration()
     token = None
     busted = False
 
     def __init__(self):
         self.client = Client(self.url)
 
+
+
+
+
     def login(self):
         if self.busted == True:
             return None
         try:
             log.info('Logging in to Jira')
-            login = self.client.service.login(self._username, self._password)
+            login = self.client.service.login(self._options.username,
+                    self._options.password)
             self.token = str(login)
             return True
         except WebFault, e:
             if "RemoteAuthenticationException" in e.fault.faultstring:
+                print e.fault.faultstring
                 log.error('Failed to log in to Jira!')
                 # credentials doesn't work, something is broken
                 self.busted = True
@@ -87,5 +104,6 @@ class JiraBot(object):
     def get_jql_results(self, jql, maxResults=0):
         jql_meth = self.client.service.getIssuesFromJqlSearch
         return jql_meth(self.token, jql, maxResults)
+
 
 

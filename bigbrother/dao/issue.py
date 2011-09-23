@@ -1,4 +1,6 @@
 from bigbrother.connector.jira import JiraBot as j
+from bigbrother.connector.jira import make_configuration
+
 from bigbrother.model import create_issue
 
 client = j()
@@ -25,5 +27,9 @@ def get_jql_results(jql, max_results=10):
     else:
         return None
             
+    
+def set_configuration(config):
+    config = make_configuration(config['username'], config['password'])
+    client._options = config
     
 
